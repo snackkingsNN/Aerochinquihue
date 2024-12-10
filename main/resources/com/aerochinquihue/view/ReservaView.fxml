@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="com.aerochinquihue.controller.ReservaController">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Reserva de Pasajes y Encomiendas" style="-fx-font-size: 20px;"/>
+
+    <HBox spacing="10">
+        <Label text="Cliente:"/>
+        <TextField fx:id="clienteField"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Vuelo:"/>
+        <ComboBox fx:id="vueloComboBox" promptText="Selecciona el destino del vuelo"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Tipo de Reserva:"/>
+        <ComboBox fx:id="tipoReservaComboBox" promptText="Selecciona el tipo de reserva"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Tipo de Avión:"/>
+        <ComboBox fx:id="tipoAvionComboBox" promptText="Selecciona el tipo de avion"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Asientos:"/>
+        <TextField fx:id="asientosField" promptText="Numero de asientos" editable="true"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Peso (kg):"/>
+        <TextField fx:id="pesoField" promptText="Peso en kg" />
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Precio:"/>
+        <TextField fx:id="precioField" editable="false"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Button text="Reservar" onAction="#reservar"/>
+    </HBox>
+
+    <TableView fx:id="vuelosTableView" prefHeight="200">
+        <columns>
+            <TableColumn fx:id="destinoColumn" text="Destino" />
+            <TableColumn fx:id="precioPasajeColumn" text="Precio Pasaje" />
+            <TableColumn fx:id="precioEncomiendaColumn" text="Precio Encomienda" />
+        </columns>
+    </TableView>
+</VBox>

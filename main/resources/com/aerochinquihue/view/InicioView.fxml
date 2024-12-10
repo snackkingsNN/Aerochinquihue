@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20" alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="com.aerochinquihue.controller.InicioController">
+    <padding>
+        <Insets top="40" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Bienvenido a AeroChinquihue" style="-fx-font-size: 24px;"/>
+
+    <Button fx:id="reservarPasajeButton" text="Reservar Pasaje" onMouseClicked="#reservarPasaje"/>
+</VBox>

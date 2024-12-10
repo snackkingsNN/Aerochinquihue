@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="com.aerochinquihue.controller.GerenteController">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Resumen de Ventas Diarias" style="-fx-font-size: 20px;"/>
+
+    <TableView fx:id="ventasTableView" prefHeight="400" prefWidth="600">
+        <columns>
+            <TableColumn fx:id="clienteColumn" text="Cliente"/>
+            <TableColumn fx:id="destinoColumn" text="Destino"/>
+            <TableColumn fx:id="tipoColumn" text="Tipo"/>
+            <TableColumn fx:id="precioColumn" text="Precio"/>
+        </columns>
+    </TableView>
+
+    <Button text="Añadir Vuelo Extraordinario" onAction="#anadirVueloExtraordinario"/>
+    <Button text="Aplicar Descuento Especial" onAction="#aplicarDescuentoEspecial"/>
+</VBox>
