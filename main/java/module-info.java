@@ -2,6 +2,7 @@ module com.aerochinquihue {
     requires javafx.controls;
     requires javafx.fxml;
     requires org.jetbrains.annotations;
+    requires java.desktop;
 
     opens com.aerochinquihue to javafx.fxml;
     opens com.aerochinquihue.model to javafx.base;

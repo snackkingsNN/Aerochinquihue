@@ -1,10 +1,13 @@
 package com.aerochinquihue.model;
 
+import java.time.LocalDate;
+
 public class Reserva {
     private String tipo;
     private String destino;
     private double precio;
     private String cliente;
+    private LocalDate fechaEntrega; // Asegúrate de tener este campo
 
     public Reserva(String tipo, String destino, double precio, String cliente) {
         this.tipo = tipo;
@@ -43,5 +46,24 @@ public class Reserva {
 
     public void setCliente(String cliente) {
         this.cliente = cliente;
+    }
+
+    public LocalDate getFechaEntrega() {
+        return fechaEntrega;
+    }
+
+    public void setFechaEntrega(LocalDate fechaEntrega) {
+        this.fechaEntrega = fechaEntrega;
+    }
+
+    @Override
+    public String toString() {
+        return "Reserva{" +
+                "tipo='" + tipo + '\'' +
+                ", destino='" + destino + '\'' +
+                ", precio=" + precio +
+                ", cliente='" + cliente + '\'' +
+                ", fechaEntrega=" + fechaEntrega +
+                '}';
     }
 }

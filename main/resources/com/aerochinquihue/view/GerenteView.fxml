@@ -11,7 +11,7 @@
 
     <Label text="Resumen de Ventas Diarias" style="-fx-font-size: 20px;"/>
 
-    <TableView fx:id="ventasTableView" prefHeight="400" prefWidth="600">
+    <TableView fx:id="ventasTableView" prefHeight="200" prefWidth="600">
         <columns>
             <TableColumn fx:id="clienteColumn" text="Cliente"/>
             <TableColumn fx:id="destinoColumn" text="Destino"/>
@@ -20,6 +20,42 @@
         </columns>
     </TableView>
 
+    <Label text="Vuelos en Servicio" style="-fx-font-size: 20px;"/>
+
+    <TableView fx:id="vuelosTableView" prefHeight="200" prefWidth="600">
+        <columns>
+            <TableColumn fx:id="destinoVueloColumn" text="Destino"/>
+            <TableColumn fx:id="precioPasajeVueloColumn" text="Precio Pasaje"/>
+            <TableColumn fx:id="precioEncomiendaVueloColumn" text="Precio Encomienda"/>
+        </columns>
+    </TableView>
+
+    <HBox spacing="10">
+        <Label text="Destino:"/>
+        <ComboBox fx:id="destinoExtraComboBox" promptText="Selecciona el destino del vuelo"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Precio Pasaje:"/>
+        <TextField fx:id="precioPasajeExtraField"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Precio Encomienda:"/>
+        <TextField fx:id="precioEncomiendaExtraField"/>
+    </HBox>
+
     <Button text="Añadir Vuelo Extraordinario" onAction="#anadirVueloExtraordinario"/>
+
+    <HBox spacing="10">
+        <Label text="Cliente:"/>
+        <TextField fx:id="clienteDescuentoField"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Descuento (%):"/>
+        <TextField fx:id="descuentoField"/>
+    </HBox>
+
     <Button text="Aplicar Descuento Especial" onAction="#aplicarDescuentoEspecial"/>
 </VBox>

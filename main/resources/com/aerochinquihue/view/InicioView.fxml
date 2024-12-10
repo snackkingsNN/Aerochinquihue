@@ -12,4 +12,5 @@
     <Label text="Bienvenido a AeroChinquihue" style="-fx-font-size: 24px;"/>
 
     <Button fx:id="reservarPasajeButton" text="Reservar Pasaje" onMouseClicked="#reservarPasaje"/>
+    <Button fx:id="gerenteButton" text="Gerente" onMouseClicked="#abrirVistaGerente"/>
 </VBox>

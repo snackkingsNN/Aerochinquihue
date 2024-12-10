@@ -5,7 +5,6 @@ import com.aerochinquihue.model.Registro;
 import com.aerochinquihue.model.Vuelo;
 import com.aerochinquihue.model.DataLoader;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
@@ -61,9 +60,9 @@ public class EncomiendaController {
             Encomienda encomienda = new Encomienda(destino, peso, precio);
 
             registro.agregarEncomienda(encomienda);
-            mostrarAlerta("Éxito", "Encomienda reservada: Cliente=" + cliente + ", Destino=" + destino + ", Peso=" + peso + "kg, Precio=" + precio);
+            mostrarAlerta("Exito", "Encomienda reservada: Cliente=" + cliente + ", Destino=" + destino + ", Peso=" + peso + "kg, Precio=" + precio);
         } else {
-            mostrarAlerta("Error", "Completa todos los campos y asegúrate de que el peso/precio sean números válidos.");
+            mostrarAlerta("Error", "Completa todos los campos y asegurate de que el peso/precio sean numeros validos.");
         }
     }
 

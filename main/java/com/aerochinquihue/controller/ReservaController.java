@@ -7,6 +7,9 @@ import com.aerochinquihue.model.Registro;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -14,12 +17,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class ReservaController {
-    // Eliminamos el método y la variable no utilizados
-    // private static boolean estadoEmergencia = false;
-
     @FXML
     private TextField clienteField;
     @FXML
@@ -34,6 +35,10 @@ public class ReservaController {
     private TextField asientosField;
     @FXML
     private TextField precioField;
+    @FXML
+    private ComboBox<String> medioPagoComboBox;
+    @FXML
+    private ComboBox<String> estadoEmergenciaComboBox;
 
     @FXML
     private TableView<Vuelo> vuelosTableView;
@@ -46,6 +51,9 @@ public class ReservaController {
 
     private final ObservableList<String> tipoReservaList = FXCollections.observableArrayList("Pasaje", "Encomienda");
     private final ObservableList<String> tipoAvionList = FXCollections.observableArrayList("CESSNA 310 (5 pasajeros)", "CESSNA 208 CARAVAN (9 pasajeros)", "LET 410 UVP-E20 (19 pasajeros)");
+    private final ObservableList<String> medioPagoList = FXCollections.observableArrayList("Efectivo", "Tarjeta", "Transferencia");
+    private final ObservableList<String> estadoEmergenciaList = FXCollections.observableArrayList("No", "Sí");
+
     private List<Vuelo> vuelosDisponibles;
     private final ObservableList<Vuelo> vueloList = FXCollections.observableArrayList();
     private final Registro registro = new Registro();
@@ -56,6 +64,8 @@ public class ReservaController {
         vueloComboBox.setItems(FXCollections.observableArrayList(DataLoader.getDestinos(vuelosDisponibles)));
         tipoReservaComboBox.setItems(tipoReservaList);
         tipoAvionComboBox.setItems(tipoAvionList);
+        medioPagoComboBox.setItems(medioPagoList);
+        estadoEmergenciaComboBox.setItems(estadoEmergenciaList);
 
         destinoColumn.setCellValueFactory(new PropertyValueFactory<>("destino"));
         precioPasajeColumn.setCellValueFactory(new PropertyValueFactory<>("precioPasaje"));
@@ -136,7 +146,7 @@ public class ReservaController {
             case "LET 410 UVP-E20 (19 pasajeros)":
                 return 2.0;
             default:
-                return 1.0;
+                return 1.0; // Valor por defecto
         }
     }
 
@@ -148,42 +158,56 @@ public class ReservaController {
         String pesoText = pesoField.getText();
         String asientosText = asientosField.getText();
         String precioText = precioField.getText();
+        String medioPago = medioPagoComboBox.getValue();
+        String estadoEmergencia = estadoEmergenciaComboBox.getValue();
 
         if (tipoReserva != null && destino != null && tipoAvion != null && isNumeric(precioText)) {
             double precio = Double.parseDouble(precioText);
             Vuelo vuelo = encontrarVueloPorDestino(destino);
 
             if (vuelo != null) {
+                if ("Si".equals(estadoEmergencia)) {
+                    precio = 0.0;
+                } else if (clienteHaRealizadoMasDe10Vuelos(cliente)) {
+                    precio *= 0.9;
+                }
+
                 Reserva reserva;
                 if (tipoReserva.equals("Pasaje")) {
                     double asientos = Double.parseDouble(asientosText);
-                    precio = asientos * vuelo.getPrecioPasaje();
-                    if (clienteHaRealizadoMasDe10Vuelos(cliente)) {
-                        precio *= 0.9; // Aplicar descuento del 10%
-                    }
                     reserva = new Reserva("Pasaje", destino, precio, cliente);
                 } else if (tipoReserva.equals("Encomienda")) {
                     double peso = Double.parseDouble(pesoText);
-                    precio = peso * vuelo.getPrecioEncomienda() * obtenerFactorTipoAvion(tipoAvion);
                     reserva = new Reserva("Encomienda", destino, precio, cliente);
+
+
+                    LocalDate fechaEntrega = calcularFechaEntrega(vuelo, peso);
+                    reserva.setFechaEntrega(fechaEntrega);
+                    mostrarAlerta("Reserva de Encomienda", "Fecha estimada de entrega: " + fechaEntrega);
                 } else {
-                    mostrarAlerta("Error", "Tipo de reserva no válido.");
+                    mostrarAlerta("Error", "Tipo de reserva no valido.");
                     return;
                 }
 
                 registro.agregarReserva(reserva);
-                mostrarAlerta("Éxito", "Reserva realizada: Cliente=" + cliente + ", Vuelo=" + destino + ", Tipo=" + tipoReserva + ", Tipo de Avión=" + tipoAvion + ", Precio=" + precio);
+                mostrarAlerta("Exito", "Reserva realizada: Cliente=" + cliente + ", Vuelo=" + destino + ", Tipo=" + tipoReserva + ", Tipo de Avion=" + tipoAvion + ", Precio=" + precio + ", Medio de Pago=" + medioPago);
             } else {
                 mostrarAlerta("Error", "Destino no encontrado.");
             }
         } else {
-            mostrarAlerta("Error", "Completa todos los campos y asegúrate de que el peso/precio sea un número válido.");
+            mostrarAlerta("Error", "Completa todos los campos y asegurate de que el peso/precio sea un numero valido.");
         }
     }
 
+    private LocalDate calcularFechaEntrega(Vuelo vuelo, double peso) {
+        int diasExtra = (int) Math.ceil(peso / 10);
+        return LocalDate.now().plusDays(diasExtra);
+    }
+
     private boolean clienteHaRealizadoMasDe10Vuelos(String cliente) {
-        // implementar para verificar si el cliente ha realizado mas de 10 vuelos
-        return false;
+        return registro.obtenerReservas().stream()
+                .filter(reserva -> reserva.getCliente().equals(cliente))
+                .count() > 10;
     }
 
     private Vuelo encontrarVueloPorDestino(String destino) {
@@ -208,5 +232,18 @@ public class ReservaController {
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         alerta.showAndWait();
+    }
+
+    @FXML
+    private void volverInicio() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/aerochinquihue/view/InicioView.fxml"));
+            Scene scene = new Scene(loader.load());
+            Stage stage = (Stage) clienteField.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "No se pudo cargar la vista de inicio.");
+        }
     }
 }
